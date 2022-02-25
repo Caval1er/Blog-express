@@ -20,7 +20,8 @@
     "mongoose": "^6.2.3",
     "mongoose-plugin-autoinc": "^1.1.9",
     "morgan": "~1.9.1",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "redis": "^4.0.4"
   },
   "devDependencies": {
     "eslint": "^8.2.0",
@@ -34,5 +35,8 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
     "prettier": "^2.5.1"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix"
   }
 }
