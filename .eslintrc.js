@@ -16,5 +16,6 @@ module.exports = {
     'arrow-body-style': 'off',
     'consistent-return': 'off',
     'no-useless-catch': 'off',
+    'no-useless-return': 'off',
   },
 }

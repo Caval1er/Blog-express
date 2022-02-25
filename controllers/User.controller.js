@@ -7,6 +7,7 @@ const {
   signRefreshToken,
   verifyRefreshToken,
 } = require('../utils/jwt')
+const client = require('../utils/redis')
 module.exports = {
   // 注册
   register: async (req, res, next) => {
@@ -51,6 +52,27 @@ module.exports = {
         { accessToken, refreshToken: refToken },
         '刷新token成功'
       ).success(res)
+    } catch (error) {
+      next(error)
+    }
+  },
+  logout: async (req, res, next) => {
+    try {
+      const { refreshToken } = req.body
+      if (!refreshToken) throw createError(400)
+      const userId = await verifyRefreshToken(refreshToken)
+      await client.del(userId)
+      new Result('登出成功').success(res)
+    } catch (error) {
+      next(error)
+    }
+  },
+  autoLogin: async (req, res, next) => {
+    try {
+      const { refreshToken } = req.body
+      if (!refreshToken) throw createError(400)
+      await verifyRefreshToken(refreshToken)
+      new Result('自动登录').success(res)
     } catch (error) {
       next(error)
     }

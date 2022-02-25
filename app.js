@@ -4,7 +4,6 @@ const path = require('path')
 const logger = require('morgan')
 require('dotenv').config()
 require('./utils/mongodb')()
-const client = require('./utils/redis')
 
 const indexRouter = require('./routes/index')
 const app = express()
