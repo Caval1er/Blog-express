@@ -12,4 +12,5 @@ router.post('/register', UserController.register)
 router.post('/login', UserController.login)
 router.post('/logout', UserController.logout)
 router.post('/auto-login', UserController.autoLogin)
+router.get('/info', verifyAccessToken, UserController.getInfo)
 module.exports = router

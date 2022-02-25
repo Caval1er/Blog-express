@@ -20,8 +20,8 @@ class Result {
   }
 
   createResult() {
-    if (!this.code) {
-      this.code = process.env.CODE_SUCEESS
+    if (this.code === null) {
+      this.code = parseInt(process.env.CODE_SUCCESS, 10)
     }
     let base = {
       code: this.code,
@@ -40,12 +40,13 @@ class Result {
     res.json(this.createResult())
   }
 
-  success(res, code = process.env.CODE_SUCCESS) {
+  success(res, code = parseInt(process.env.CODE_SUCCESS, 10)) {
+    console.log(process.env.CODE_SUCEESS)
     this.code = code
     this.json(res)
   }
 
-  fail(res, code = process.env.CODE_ERROR) {
+  fail(res, code = parseInt(process.env.CODE_ERROR, 10)) {
     this.code = code
     this.json(res)
   }

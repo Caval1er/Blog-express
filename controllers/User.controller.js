@@ -17,7 +17,8 @@ module.exports = {
       const isExist = await UserModel.findOne({ email })
       if (isExist) throw createError(409, `${email}已经被注册`)
       const user = new UserModel({ email, password })
-      if (!user) throw createError(404, '注册失败')
+      const registerUser = await user.save()
+      if (!registerUser) throw createError(404, '注册失败')
       new Result('注册成功').success(res)
     } catch (error) {
       if (error.isJoi) return next(createError(400, '不合法的邮箱或密码'))
@@ -41,6 +42,7 @@ module.exports = {
       next(error)
     }
   },
+  // 刷新token
   refreshToken: async (req, res, next) => {
     try {
       const { refreshToken } = req.body
@@ -56,6 +58,7 @@ module.exports = {
       next(error)
     }
   },
+  // 登出
   logout: async (req, res, next) => {
     try {
       const { refreshToken } = req.body
@@ -67,12 +70,25 @@ module.exports = {
       next(error)
     }
   },
+  // 自动登录
   autoLogin: async (req, res, next) => {
     try {
       const { refreshToken } = req.body
       if (!refreshToken) throw createError(400)
       await verifyRefreshToken(refreshToken)
       new Result('自动登录').success(res)
+    } catch (error) {
+      next(error)
+    }
+  },
+
+  // 获取用户信息
+  getInfo: async (req, res, next) => {
+    try {
+      const userId = req.payload.aud
+      const userInfo = await UserModel.findById(userId).select({ password: 0 })
+      if (!userInfo) throw createError(404, '没有找到用户信息')
+      new Result(userInfo, '返回用户信息').success(res)
     } catch (error) {
       next(error)
     }
